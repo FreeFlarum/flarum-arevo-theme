@@ -11,8 +11,12 @@
     },
     "authors": [
         {
-            "name": "FreeFlarum",
-            "email": "info@freeflarum.com",
+            "name": "Misticalkai",
+            "role": "Maintainer"
+        },
+        {
+            "name": "Kevin Svitač",
+            "email": "kevin@svit.ac",
             "role": "Developer"
         }
     ],
