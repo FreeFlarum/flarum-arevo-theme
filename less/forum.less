@@ -1,7 +1,39 @@
+@border-radius-default: 20px;
+@border-radius-large: 30px;
+@border-radius-small: 10px;
+@font-awesome: 'Font Awesome 5 Free';
+@font-weight-bold: 600;
+@font-size-icon: 15px;
+@shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
+@text-shadow: 0px 0px 2px #000;
+
+
+.borderRadius(@radius) {
+    border-radius: @radius !important;
+}
+
+.iconBefore(@font-family, @content) {
+    font-family: @font-family;
+    font-weight: @font-weight-bold;
+    font-size: @font-size-icon;
+    content: @content;
+    margin-right: 8px;
+    vertical-align: -1px;
+}
+
+.shadow(@shadow) {
+    box-shadow: @shadow !important;
+}
+
+.textShadow(@shadow) {
+    text-shadow: @shadow;
+}
+
+
 @media (min-width: 768px) {
     .DiscussionList-discussions.flexCard {
         display: grid !important;
-        grid-template-columns: 1fr 1fr 1fr 1fr !important;
+        grid-template-columns: repeat(4, 1fr) !important;
         gap: 1rem !important;
     }
 
@@ -9,60 +41,41 @@
         min-width: 100% !important;
     }
 
-    .Button {
-        border-radius: 16px;
-    }
+    .borderRadius(@border-radius-small);
 
-    .FormControl {
-        border-radius: 10px;
-    }
+    .AvatarEditor {
 
-    .Search-input {
-        border-radius: 16px;
-    }
-
-    .Dropdown-menu {
-        border-radius: 20px;
-    }
-
-    .NotificationGrid {
-        border-radius: 10px;
-    }
-
-    .Modal-content {
-        border-radius: 25px;
-    }
-
-    .Dropdown--split.itemCount1 .Button {
-        border-radius: 30px !important;
-    }
-
-    .App--discussion .Composer:not(.fullScreen) {
-        border-radius: 10px 10px 0 0;
-    }
-
-    .DiscussionListItem:hover {
-        border-radius: 10px;
-    }
-
-    .AvatarEditor:hover .Dropdown-toggle,
-    .AvatarEditor.open .Dropdown-toggle,
-    .AvatarEditor.loading .Dropdown-toggle,
-    .AvatarEditor.dragover .Dropdown-toggle {
-        border-radius: 30px;
+        &.open .Dropdown-toggle,
+        &.loading .Dropdown-toggle,
+        &.dragover .Dropdown-toggle,
+        &:hover .Dropdown-toggle {
+            .borderRadius(@border-radius-large);
+        }
     }
 
     .DiscussionListItem-author .Avatar {
-        border-radius: 10px;
+        .borderRadius(@border-radius-small);
+    }
+
+    .Dropdown--split.itemCount1 .Button {
+        .borderRadius(@border-radius-large);
+    }
+
+    .App--discussion .Composer:not(.fullScreen) {
+        border-radius: @border-radius-small @border-radius-small 0 0;
+    }
+
+    .DiscussionListItem:hover {
+        .borderRadius(@border-radius-small);
     }
 }
 
+
 .UserCard-avatar .Avatar,
 .PostUser-avatar,
-.UserCard-avatar .Avatar,
 .Avatar,
 .UserCard-avatar .Dropdown-toggle {
-    border-radius: 20px;
+    .borderRadius(@border-radius-default);
 }
 
 .ComposerBody-header h3 input {
@@ -77,24 +90,26 @@
 .Header-title {
     font-size: 24px;
     font-weight: bolder;
+
+    a:hover {
+        text-decoration: none;
+        .textShadow(@text-shadow);
+    }
 }
 
-.Header-title a:hover {
-    text-decoration: none;
-    text-shadow: 0px 0px 2px #000;
-}
+.Hero {
+    h2 {
+        font-weight: bolder;
+        font-size: 28px;
+        .textShadow(@text-shadow);
+        color: white;
+    }
 
-.Hero h2 {
-    font-weight: bolder;
-    font-size: 28px;
-    text-shadow: 0px 0px 2px #000;
-    color: white;
-}
-
-.Hero-subtitle {
-    font-size: 20px;
-    text-shadow: 0px 0px 2px #000;
-    color: white;
+    .Hero-subtitle {
+        font-size: 20px;
+        .textShadow(@text-shadow);
+        color: white;
+    }
 }
 
 h2.DiscussionHero-title {
@@ -108,19 +123,17 @@ h2.DiscussionHero-title {
 .item-user a:hover {
     text-decoration: none;
     color: #fff;
-    text-shadow: 0px 0px 2px #000;
+    .textShadow(@text-shadow);
 }
 
 .ReplyPlaceholder {
     background-color: transparent !important;
-    border-radius: 10px;
+    .borderRadius(@border-radius-small);
     margin-top: 20px;
-    -webkit-box-shadow: 0 1px 10px 0 rgba(151, 158, 181, 0.28) !important;
-    box-shadow: 0 1px 10px 0 rgba(151, 158, 181, 0.28) !important;
+    .shadow(@shadow);
 }
 
 .ReplyPlaceholder:hover {
-    -webkit-box-shadow: 0 1px 10px 0 rgba(0, 0, 0, .18) !important;
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .18) !important;
 }
 
@@ -142,114 +155,98 @@ h2.DiscussionHero-title {
     margin-top: 10px;
 }
 
-#header-secondary>ul>li.item-logIn>button>span:before {
-    font-weight: bolder;
-    font-size: 16px;
-    content: '\f2f6';
-    margin-right: 4px;
-    vertical-align: -1px;
-}
+#header-secondary>ul>li {
 
-#header-secondary>ul>li.item-signUp>button>span:before {
-    font-weight: bolder;
-    font-size: 12px;
-    content: '\f090';
-    margin-right: 4px;
-    vertical-align: 1px;
-}
+    &.item-logIn>button>span,
+    &.item-signUp>button>span {
+        font-weight: bolder;
 
-#header-secondary>ul>li.item-signUp>button>span,
-#header-secondary>ul>li.item-logIn>button>span {
-    font-weight: bolder;
+        &:before {
+            font-weight: bolder;
+            margin-right: 4px;
+        }
+    }
+
+    &.item-logIn>button>span:before {
+        font-size: 16px;
+        content: '\f2f6';
+        vertical-align: -1px;
+    }
+
+    &.item-signUp>button>span:before {
+        font-size: 12px;
+        content: '\f090';
+        vertical-align: 1px;
+    }
 }
 
 .item-like .Button:before {
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 600;
-    font-size: 15px;
-    content: '\f004';
-    margin-right: 8px;
-    vertical-align: -1px;
+    .iconBefore(@font-awesome, '\f004');
 }
 
 .item-reply .Button--link:before {
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 600;
-    font-size: 15px;
-    content: '\f075';
-    margin-right: 8px;
-    vertical-align: -1px;
+    .iconBefore(@font-awesome, '\f075');
 }
 
-.item-like .Button[title="Unlike"]:before {
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 600;
-    font-size: 15px;
-    content: '\f7a9';
-    margin-right: 8px;
-    vertical-align: -1px;
-}
+.item-like .Button {
 
-.item-like .Button[title="Like"]:before {
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 600;
-    font-size: 15px;
-    content: '\f7a9';
-    margin-right: 8px;
-    vertical-align: -1px;
+    &[title="Unlike"]:before,
+    &[title="Like"]:before {
+        .iconBefore(@font-awesome, '\f7a9');
+    }
 }
 
 .PostUser .UserOnline {
     position: absolute;
     left: -60.5px;
     top: 56px;
-    border-radius: 50% !important;
+    .borderRadius(50%);
     border: 2px solid #fff;
     line-height: 0;
 }
 
 .Navigation-back {
-    border-radius: 30px !important;
+    .borderRadius(@border-radius-large);
 }
 
 .UserCard--popover,
 .UserCard--popover .darkenBackground {
-    border-radius: 20px;
+    .borderRadius(@border-radius-default);
 }
 
 .UserCard {
     background: var(--usercard-bg);
     margin-top: 10px;
-    border-radius: 30px;
+    .borderRadius(@border-radius-large);
 }
 
 .darkenBackground {
     background: var(--shadow-color);
-    border-radius: 30px;
+    .borderRadius(@border-radius-large);
 }
 
 .TagHero--colored {
     --hero-color: var(--body-bg);
-    margin-right: 40px !important;
-    margin-left: 40px !important;
-    margin-top: 20px !important;
-    border-radius: 20px !important;
+    margin: 20px 40px 0 !important;
+    .borderRadius(@border-radius-default);
 }
 
 body .CardsListItem {
     background: #242424;
-    border-radius: 20px;
+    .borderRadius(@border-radius-default);
 }
 
 .previewCardImg {
-    border-radius: 20px;
+    .borderRadius(@border-radius-default);
 }
 
 @media (min-width: 1100px) {
+    .hasPane {
 
-    .hasPane.panePinned .Navigation-back,
-    .hasPane.paneShowing .Navigation-back {
-        border-radius: 30px 0 0 30px !important;
+        &.panePinned .Navigation-back,
+        &.paneShowing .Navigation-back {
+            border-radius: @border-radius-large 0 0 @border-radius-large !important;
+        }
     }
 }
 
@@ -274,11 +271,9 @@ body .CardsListItem {
 
 @media (min-width: 992px) {
     .Composer:not(.fullScreen) {
-        border-radius: 10px 10px 0 0;
+        border-radius: @border-radius-small @border-radius-small 0 0;
     }
-}
 
-@media (min-width: 992px) {
     .sideNav {
         margin-left: 0 !important;
     }
@@ -286,7 +281,7 @@ body .CardsListItem {
 
 .AfruxWidgets-Widget-content {
     background: #212121 !important;
-    border-radius: 20px !important;
+    .borderRadius(@border-radius-default);
 }
 
 .Header-logo {
@@ -296,33 +291,33 @@ body .CardsListItem {
 }
 
 .LinkedAccounts-Account {
-    border-radius: 20px !important;
+    .borderRadius(@border-radius-default);
 }
 
-.NotificationGrid td,
-.NotificationGrid th,
-.NotificationGrid .Checkbox,
-.NotificationGrid-controls-item {
-    padding: 10px 15px;
-    border-radius: 16px;
+.NotificationGrid {
+    td,
+    th,
+    .Checkbox,
+    .NotificationGrid-controls-item {
+        padding: 10px 15px;
+        .borderRadius(@border-radius-large);
+    }
+
+    .borderRadius(@border-radius-default);
 }
 
 .Card .wrapImg {
-    border-top-left-radius: 20px !important;
-    border-top-right-radius: 20px !important;
+    border-top-left-radius: @border-radius-default !important;
+    border-top-right-radius: @border-radius-default !important;
 }
 
 .feedback-main {
     background-color: #212121;
     color: #fff;
-    border-radius: 20px !important;
+    .borderRadius(@border-radius-default);
     text-align: center;
     overflow: hidden;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
-}
-
-.NotificationGrid {
-    border-radius: 20px;
+    .shadow(@shadow);
 }
 
 .banned-word-modal .Modal-content {
@@ -332,8 +327,8 @@ body .CardsListItem {
 
 .cardSpacer {
     height: 50px !important;
-    border-bottom-left-radius: 20px !important;
-    border-bottom-right-radius: 20px !important;
+    border-bottom-left-radius: @border-radius-default !important;
+    border-bottom-right-radius: @border-radius-default !important;
 }
 
 #feedback-btn {
@@ -341,9 +336,9 @@ body .CardsListItem {
     display: flex;
     align-items: center;
     padding: 1.2rem 0.7rem;
-    border-radius: 15px !important;
+    .borderRadius(@border-radius-small);
     cursor: pointer;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
+    .shadow(@shadow);
     user-select: none;
     border: 0;
     outline: 0;
@@ -355,71 +350,64 @@ body .CardsListItem {
 .AccessTokensList {
     display: flex;
     flex-direction: column;
-    border-radius: 20px;
+    .borderRadius(@border-radius-default);
     overflow: hidden;
 }
 
 .WarningListItem {
     position: relative;
-    margin-right: -15px;
-    padding-right: 25px;
-    padding-left: 15px;
-    margin-left: -15px;
-    border-radius: 20px !important;
+    margin: 0 -15px;
+    padding: 0 25px 0 15px;
+    .borderRadius(@border-radius-default);
     transition: background .2s;
     background: #1d1d1d;
-    box-shadow: 0 2px 4px 0em rgba(0, 0, 0, 0.04), 0 3px 10px 0 rgba(0, 0, 0, 0.07000000000000001);
+    .shadow(0 2px 4px 0em rgba(0, 0, 0, 0.04), 0 3px 10px 0 rgba(0, 0, 0, 0.07000000000000001));
 }
 
 .BlogSideWidget {
     background: #1a1a1a;
     box-shadow: #212121 !important;
-    border-radius: 20px !important;
+    .borderRadius(@border-radius-default);
     margin-bottom: 15px;
+
+    .sideNav li {
+        padding: 1px 15px;
+        .borderRadius(@border-radius-small);
+    }
 }
 
 #header {
     margin: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+    padding: 0 !important;
 
     .container {
-        margin-left: 0 !important;
-        margin-right: 0 !important;
+        margin: 0 !important;
         width: 100%;
     }
 }
 
 .Dropdown-menu {
-    border-radius: 20px;
+    .borderRadius(@border-radius-default);
     padding: 8px !important;
-}
 
-*,
-::before,
-::after {
-    box-sizing: border-box;
-}
-
-.Dropdown-menu>li>a,
-.Dropdown-menu>li>button,
-.Dropdown-menu>li>span {
-    color: var(--text-color);
-    white-space: nowrap;
-    text-align: left;
-    font-size: 13px;
-    font-weight: normal;
-    cursor: pointer;
-    border-radius: 15px !important;
+    >li>a,
+    >li>button,
+    >li>span {
+        color: var(--text-color);
+        white-space: nowrap;
+        text-align: left;
+        font-size: 13px;
+        font-weight: normal;
+        cursor: pointer;
+        .borderRadius(@border-radius-small);
+    }
 }
 
 .DiscussionHero--colored,
 .DiscussionHero--colored a {
     color: var(--contrast-color, var(--body-bg));
-    margin-right: 40px !important;
-    margin-left: 40px !important;
-    margin-top: 20px !important;
-    border-radius: 30px !important;
+    margin: 20px 40px !important;
+    .borderRadius(@border-radius-large);
 }
 
 .Hero {
@@ -427,33 +415,12 @@ body .CardsListItem {
     background: var(--hero-bg);
     text-align: center;
     color: var(--contrast-color, var(--hero-color));
-    margin-right: 40px !important;
-    margin-left: 40px !important;
-    border-radius: 30px !important;
+    margin: 20px 40px !important;
+    .borderRadius(@border-radius-large);
 }
 
-.UserCard {
-    background: var(--usercard-bg);
-    margin-top: 10px;
-    border-radius: 30px !important;
-}
-
-.darkenBackground {
-    background: var(--shadow-color);
-    border-radius: 30px !important;
-}
-
-.BlogSideWidget .sideNav li {
-    padding: 1px 15px 1px 15px;
-    border-radius: 15px !important;
-}
-
-.Composer.active:not(.fullScreen) {
-    box-shadow: 0 0 0 2px #212121, 0 2px 6px var(--shadow-color) !important;
-}
-
-.Modal {
-    border-radius: 30px;
+body .flexCard {
+    background: #1a1a1a !important;
 }
 
 .IndexPage-toolbar-action {
@@ -477,6 +444,6 @@ body .CardsListItem {
     width: 95% !important;
 }
 
-body .flexCard {
-    background: #1a1a1a !important;
+.Modal {
+    .borderRadius(@border-radius-large);
 }
